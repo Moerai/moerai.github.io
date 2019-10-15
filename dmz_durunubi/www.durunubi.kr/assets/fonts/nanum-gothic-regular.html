@@ -1,0 +1,2121 @@
+
+
+
+
+
+
+	<!-- header -->
+	<!-- 메뉴활성화 값 넘겨주기 위한 파라메터 menuState1 : 대메뉴 menuState2 : 소메뉴 -->
+ 	
+ 		
+		
+	
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko-KR">
+
+<head>    
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta name="Keywords" content=""/>
+    <meta name="Description" content=""/>
+    
+    <meta property="og:type" content="website"/>
+
+    
+    
+        <meta property="og:title" content="두루누비"/>
+    
+    
+
+    
+    
+        <meta property="og:description" content="두루누비는 한국관광공사에서 운영하는 위치 기반 정보서비스 입니다"/>
+    
+    
+
+
+    
+    
+    
+
+    <meta property="og:url" content="https://www.durunubi.kr:443/assets/fonts/nanum-gothic-regular.eot?"/>
+
+    
+    
+        <meta property="og:image" content="/images/logo.png"/>
+    
+    
+    <title>두루누비</title>
+
+    <link rel="shortcut icon" href="/images/favicon.ico">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.min.css"/>
+    <link href="/assets/css/swiper/swiper.min.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="/assets/css/conv.map.css" rel="stylesheet" type="text/css" media="all"/>
+
+    <!-- JavaScript
+    ================================================== -->
+    <script src="/assets/javascripts/jquery-3.3.1.min.js"></script>
+    <script src="/assets/javascripts/bootstrap.min.js"></script>
+    <script src="/assets/javascripts/lightbox.min.js"></script>
+    <script src="/assets/javascripts/swiper/swiper.min.js"></script>
+    
+    <script src="/assets/javascripts/common_script.js"></script>
+    <script src="/assets/javascripts/login.js"></script>
+    <script src="/assets/javascripts/jquery.easy-autocomplete.min.js"></script>
+    <script src="/assets/javascripts/utils.js"></script>
+    <script src="/assets/javascripts/moment.js"></script>
+
+
+    
+
+    
+    <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=15qp8mm2hl&submodules=geocoder"></script>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a3673d4ff6136ff193e82a4c59866fb2"></script>
+
+
+    
+    
+
+
+    
+    
+
+    <script src="/js/csmap.js"></script>
+
+    <!-- 상단 검색관련 스크립트 - 작성일 2018.12.06 -->
+    <script>
+    	var keyword;
+    	var keywordList = new Array();
+    	
+        $(document).ready(function() {
+			tagInit();
+			
+			password_recheck();
+        });
+
+        /*검색페이지 이동*/
+        function searchPageGo(type) {
+			
+        	
+            if (type == "search") {
+                if (!$('#keyword').val()) {
+                    alert("검색어를 입력해주세요.");
+                    return false;
+                } else {
+                	keyword = $('#keyword').val();
+                }
+            } else if (type == "tag") {
+            	keyword = keywordList;               
+            } else if(type == "tagDetail") {
+            	if (!keyword) {
+                    alert("태그를 선택해주세요");
+                    return false;
+                }
+            }
+
+            var searchForm = document.searchForm;
+
+            searchForm.searchType.value = type;
+            searchForm.keyword.value = keyword;
+            searchForm.courseSize.value = 20;
+            searchForm.courseOffset.value = 0;
+            searchForm.themeSize.value = 6;
+            searchForm.themeOffset.value = 0;
+            searchForm.action = "/11-1-0-search-result-keyword.do";
+            searchForm.submit();
+        }
+        /*////검색페이지 이동*/
+        
+        //태그 링크 검색
+        function TagSearch(obj) {
+        	var tagname = $(obj).attr("tagname");
+            var searchForm = document.searchForm;
+            searchForm.searchType.value = "tagDetail";
+            searchForm.keyword.value = tagname;
+            searchForm.courseSize.value = 20;
+            searchForm.courseOffset.value = 0;
+            searchForm.themeSize.value = 6;
+            searchForm.themeOffset.value = 0;
+            searchForm.action = "/11-1-0-search-result-keyword.do";
+            searchForm.submit();
+        }
+
+        /*태그검색*/
+        function tagDetail(index, tagName) {
+            $('#selectTagValue').html(tagName);
+            $('#tagKeyword').html(tagName);//1차 태그값을 넣음
+            
+            $('.tag-result.detail').css("display", "none");
+            $('.tag-list.detailresult').css("display", "none");
+            keyword = tagName;
+
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "GET",
+                data : {index : index,                	
+                		searchType : "tag",
+                		keyword: tagName
+                },
+                dataType: "json",
+                url: "/getTagDetail.do",
+                success: function (result) {
+                    var cnt = result.count;
+                    $('#detailTag').empty();
+					
+                    $.each(result.list,function(index,data) {
+                        $('#detailTag').append('<li>'
+                            +	'<a href="#" onclick="detailKeyword(\''+ data.TAGDETAIL_NM +'\');" class="btn btn-primary btn-line btn-block">'+ data.TAGDETAIL_NM +'</a>'
+                            +	'</li>'	);
+                        keywordList.push(data.TAGDETAIL_NM);
+                        
+                    });
+                    $('#TagCnt').html(cnt);
+                    $(".tag-result.tag").css("display", "block");
+                    $(".tag-list.result").css("display", "block");
+                    $(".header-search-tag").animate({ scrollTop:$("#selectTagValue").offset().top -200},1000);
+                }
+            });
+        }
+        /*태그검색*/
+
+        /*상세 태그검색*/
+        function detailKeyword(detailName) {
+            //상세태그의 값을 알아내기 위해 사용
+            keyword = detailName;
+            
+            $(".tag-result.detail").css("display", "block");
+        	$('#selectDetailTagValue').html(detailName);
+        	
+        	//$('#selectTagValue').html(detailName);
+            $('#detailTagKeyword').html(detailName);
+
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "GET",
+                data : {keyword: detailName},
+                dataType: "json",
+                url: "/getDetailSearch.do",
+                success: function (result) {
+                    var cnt = result.count;
+                    $('#detailTagCnt').html(cnt);
+                    $(".tag-result.tag").css("display", "block");
+                    $(".tag-list.detailresult").css("display", "block");
+                    $(".header-search-tag").animate({ scrollTop:1500},1000);
+                }
+            });
+        }
+        
+        function tagInit() {
+        	/*tag검색어 가져오는 초기 세팅*/
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                dataType: "json",
+                url: "/getTagInfo.do",
+                success: function (result) {
+                    $.each(result,function(index,data) {
+                        $('#tagList').append('<li>'
+                            +	'<a onclick="tagDetail('+data.TAG_IDX+ ",\'" + data.TAG_NM + '\');" class="btn btn-primary btn-line btn-block">' + data.TAG_NM + '</a>'
+                            +	'</li>'	);
+                    });
+                }
+            });
+            /*///tag검색어 가져오는 초기 세팅*/
+        }
+
+        function displayTagSearch() {
+        	$(".tag-list.start").css("display", "block");
+        	$(".tag-search-start").css("display","none");
+        }  
+        
+        function resetTagSearch() {
+		$(".tag-result").css("display", "none");
+		$(".tag-list").css("display", "none");
+		$(".tag-list.start").css("display", "block");
+        }
+                
+        function link_tag(tag) {
+        	keyword = tag;
+        	searchPageGo('tagDetail');
+	}
+        
+        function logout() {
+        	if(confirm("로그아웃하시겠습니까?")) {
+        		location.href = "./12-1-0-logOut.do";
+        	}
+        }
+    </script>
+    <!--//// 상단 검색관련 스크립트 - 작성일 2018.12.06 -->
+
+</head>
+
+<body>
+
+<!-- skip -->
+<a class="skip" href="javascript:void(0);">본문으로 바로가기</a> <!-- //skip -->
+
+
+
+
+
+
+
+<script src="//cdn.polyfill.io/v1/polyfill.min.js" async defer></script>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    function loginEnter(){
+        /*비밀번호 입력 input 창에서 엔터 입력시 동작*/
+
+        // if (event.keyCode === 13) {
+        //     /*로그인 버튼 클릭*/
+        //     $("#loginSubmitButton").click();
+        // }
+
+        //key가 눌렸을 경우
+        document.onkeypress = function (e) {
+        //key 초기화
+            var result = "";
+
+            if (typeof(e) != "undefined") result = e.which;
+            else result = event.keyCode;
+            if (result == 13) {
+                //엔터 입력시 실행 함수
+                $("#loginSubmitButton").click();
+            }
+        }
+    }
+
+</script>
+
+
+<!-- Login Modal -->
+<div class="modal fade" id="userLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 5000">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-color-gray-light none-border-bottom">
+                <button type="button" class="close" data-dismiss="modal"><span class="closed"><span>닫기</span></span>
+                </button>
+                <h6 class="modal-title text-primary bold text-center">로그인</h6>
+            </div>
+            <div class="modal-body bg-color-gray-fc">
+                <div class="text-center mt-44 mb-34">
+                    <span class="logo inline mt-0"><span>두루누비</span></span>
+                </div>
+
+                <form method="POST" action="/api/auth/login" id="loginForm">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+
+                            <div class="form-group mb-12">
+                                <input type="text" name="principal" class="form-control" placeholder="아이디를 입력하세요"/>
+                            </div>
+                            <div class="form-group mb-12">
+                                <input type="password" name="credencials" class="form-control" placeholder="비밀번호를 입력하세요" id="pw" onkeypress="loginEnter(event)"/>
+							</div>
+                            
+							<div class="bg-color-gray p-15 mb-10 font-size-12 text-center" id="hintBox" style="display:none;">
+								<strong class="text-primary">비밀번호 힌트</strong><br/>
+								<span class="text-label" id="passwordHint"></span>
+							</div>
+
+                            <div data-toggle="buttons" class="form-group">
+                                <label class="btn btn-checkbox inline">
+                                    <input name="remember-me"
+                                           type="checkbox" autocomplete="off">
+                                    <span class="text-label">로그인 유지</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary btn-highlight btn-shadow btn-block bold" onclick="login()" id="loginSubmitButton">로그인</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
+                <div class="text-center text-muted mb-10 mt-20">아이디가 없으신가요?</div>
+                <div class="row mb-50">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <a href="./12-1-0-join.do" class="btn btn-primary btn-line btn-block bold">회원가입</a>
+                    </div>
+                </div>
+                <div class="text-center text-color-gray-light f10 mb-35">Copyright by KTO. ALL RIGHTS RESERVED.</div>
+            </div>
+        </div>
+    </div>
+</div>
+	
+
+
+
+
+
+
+
+<script>       
+	$(function(){
+		$("#tutorial_tab li").click(function(){
+			$("#tutorial_tab li").removeClass("active");
+			$(".tutorialContent").removeClass("active");
+			$(this).addClass("active");
+			$("#tutorialContent"+$(this).attr("data-index")).addClass("active").scrollTop(0);
+		});
+	});
+</script>
+<div class="modal fade modal-default tutorial-modal" id="more-set-tutorial-modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg" role="document" style="max-width:850px;">
+		<div class="modal-content">
+			<div class="modal-header bg-color-gray-light">
+				<button type="button" class="close" data-dismiss="modal"><span class="closed"><span>닫기</span></span></button>
+				<h6 class="modal-title text-primary text-center">튜토리얼</h6>
+			</div>
+			<div class="modal-body">
+				<div class="container">
+					<ul class="nav nav-tabs m-mt-0" id="tutorial_tab">
+						<li data-index="1" class="active"><a>여행지 찾기</a></li>
+						<li data-index="2" class=""><a>용어가이드</a></li>
+					</ul>
+				</div>
+				<!--내용 영역-->
+				<div class="container pt-30">
+					<div id="tutorialContent1" class="tutorialContent active text-color-gray-dark">
+						<h4 class="mb-20" style="font-weight:400;">두루누비에서 다양한 방법으로 쉽고 빠르게<br/>걷기/자전거 여행지를 찾으실 수 있습니다!</h4>
+						<h5 style="color:#333;">[ CASE 1] 방문할 여행지의 상세정보가 궁금하거나 특정 여행지 검색을 원하는 경우 </h5>	
+						<p class="mb-0" style="padding-left:15px; text-indent:-15px;">① 홈페이지 상단의  검색버튼(돋보기 아이콘)을 누릅니다. </p>
+						<p class="mb-20" style="padding-left:15px; text-indent:-15px;">② 검색어를 입력합니다.  Ex) ‘한강’ 입력</p>
+						<img src="./images/tutorial/content1_01.png" class="mb-15"/>
+						<img src="./images/tutorial/content1_02.png" class="mb-30"/>
+						<p class="mb-20" style="padding-left:15px; text-indent:-15px;">③ 검색결과에 따른 여행지를 선택합니다.</p>
+						<img src="./images/tutorial/content1_03.png" class="mb-30"/>
+						<p class="mb-0" style="padding-left:15px; text-indent:-15px;">④ 옵션을 선택하여 선택한 여행지 내 주변 시설 정보 및 구간정보를 확인 할 수 있습니다.</p>
+						<p class="mb-20" style="padding-left:15px; text-indent:-15px;">⑤ 선택한 여행지의 주변 지역정보, 연관테마, 후기를 확인할 수 있습니다. </p>
+						<img src="./images/tutorial/content1_04.png" class="mb-30"/>
+						<h5 style="color:#333;">[ CASE 2] 특정 여행지 검색이 아닌 경우- 태그검색</h5>	
+						<p class="mb-0" style="padding-left:15px; text-indent:-15px;">① 홈페이지 상단의  검색버튼(돋보기 아이콘)을 누릅니다.</p>
+						<p class="mb-0" style="padding-left:15px; text-indent:-15px;">② ‘태그 검색 시작하기 버튼’을 누릅니다.</p>
+						<p class="mb-0" style="padding-left:15px; text-indent:-15px;">③ 원하는 태그를 누릅니다.</p>
+						<p class="mb-20" style="padding-left:15px; text-indent:-15px;">④ 결과 보기를 원할 시 ‘바로 결과보기’ 버튼을 누릅니다</p>
+						<img src="./images/tutorial/content1_05.png" class="mb-15"/>
+						<img src="./images/tutorial/content1_06.png" class="mb-30"/>
+						<h5 style="color:#333;">[ CASE 2] 특정 여행지 검색이 아닌 경우 - 걷기/자전거 길 검색 시</h5>	
+						<p class="mb-0" style="padding-left:15px; text-indent:-15px;">① 걷기/자전거 여행 메뉴를 선택합니다. </p>
+						<p class="mb-0" style="padding-left:15px; text-indent:-15px;">② 두루누비길/전문가길 메뉴를 선택합니다.</p>
+						<p class="mb-0" style="padding-left:15px; text-indent:-15px;">③ 원하는 필터를 선택합니다. (지역, 거리, 소요시간 등 선택가능합니다.)</p>
+						<p class="mb-0" style="padding-left:15px; text-indent:-15px;">④ 검색하기 버튼을 선택합니다.</p>
+						<p class="mb-20" style="padding-left:15px; text-indent:-15px;">⑤ 검색결과로 노출되는 리스트를 통해 원하는 여행지를 선택합니다.</p>
+						<img src="./images/tutorial/content1_07.png" class="mb-15"/>
+						<img src="./images/tutorial/content1_08.png" class="mb-30"/>
+					</div>
+					<div id="tutorialContent2" class="tutorialContent text-color-gray-dark">
+						<h4 class="mb-20" style="font-weight:400;">원활한 두루누비 서비스 이용을 위한 <br/>주요 용어를 설명해드립니다.</h4>
+						<h5 style="color:#333;">테마? 여행지? 두 가지 차이점이 무엇인가요?</h5>	
+						<p class="mb-0" style="padding-left:10px; text-indent:-8px;">- 테마는 여행지를 모은 상위 단위입니다. 테마안에는 복수의 여행지들이 존재합니다.</p>
+						<p class="mb-0" style="padding-left:10px; text-indent:-8px;">- 검색 시 검색 키워드 또는 태그에 따라 테마 여행지가 각각 검색됩니다.</p>
+						<p class="mb-20" style="padding-left:10px; text-indent:-8px;">- 또한 걷기여행/자전거여행 메뉴 선택 시 테마별, 여행지별, 전문가 길별 검색이 가능합니다.</p>
+						<img src="./images/tutorial/content2_01.png" class="mb-30"/>
+						<h5 style="color:#333;">두루누비길? 전문가길? 차이점이 무엇인가요?</h5>	
+						<p class="mb-0" style="padding-left:10px; text-indent:-8px;">- 두루누비길은 각 지자체에서 관리 및 조성하는 공식길을 의미합니다.</p>
+						<p class="mb-0" style="padding-left:10px; text-indent:-8px;">- 한국관광공사가 인증한 길 전문가들이 생성한 코스를 의미합니다.</p>
+						<p class="mb-20" style="padding-left:10px; text-indent:-8px;">- 전문가가 생성한 길은 한국관광공사의 인증절차에 따라 등록됩니다</p>
+						<img src="./images/tutorial/content2_02.png" class="mb-30"/>
+						<h5>나의 여행기록과 따라간 여행지의 차이점이 무엇인가요?</h5>
+						<p class="mb-0" style="padding-left:10px; text-indent:-8px;">- 나의 여행기록은 APP을 이용하여 기록한 나만의 걷기 또는 자전거 여행코스를 의미합니다.</p>
+						<p class="mb-0" style="padding-left:10px; text-indent:-8px;">- 여행기록은 공개 불가하며, <span style="color:#0651fa;">[마이페이지&gt;여행현황&gt;나의여행기록]</span>에서 본인만 확인가능합니다.</p>
+						<p class="mb-20" style="padding-left:10px; text-indent:-8px;">- 따라간 여행지는 APP을 이용하여 두루누비 서비스에 등록된 여행지를 선택 후 따라가기 버튼을 눌러 여행지 경로를 따라가는 것을 의미합니다. <br/><span style="color:#0651fa;">[마이페이지&gt;여행현황&gt;따라간 여행지]</span>에서 확인 가능하며, 후기 등록 시 나의 기록을 회원들과 공유할 수 있습니다.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--//// 이용방법안내 Modal -->
+
+
+
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function() {
+
+        //1. 회원 약관 호출
+        var type =1;
+        var id = "clause_id"+type;
+        clauseCall(type,id)
+	});
+</script>
+
+<!-- 회원약관 처리방침 모달 Modal web-->
+<div class="modal fade modal-default" id="more-set-terms" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header bg-color-gray-light" style="width: 100%">
+                <button type="button" class="close" data-dismiss="modal"><span class="closed"><span>닫기</span></span>
+                </button>
+                <h6 class="modal-title text-primary text-center" style="width: 100%">두루누비 회원 약관 </h6>
+            </div>
+            <div class="modal-body modal-overflow">
+                <div class="modal-body pt-30 pb-30 pl-30 pr-30">
+					<div style="word-break:keep-all; font-size:17px;" id="clause_id1">
+
+					</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--//// 회원약관 처리방침 자세히보기 Modal -->
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function() {
+
+        //2. 개인정보처리방침 호출
+        var type =2;
+        var id = "clause_id"+type;
+
+        clauseCall(type,id)
+    });
+
+</script>
+
+<!-- 개인정보 취급방침 모달 Modal web-->
+<div class="modal fade modal-default" id="more-set-privacy" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header bg-color-gray-light" style="width: 100%">
+                <button type="button" class="close" data-dismiss="modal"><span class="closed"><span>닫기</span></span>
+                </button>
+                <h6 class="modal-title text-primary text-center" style="width: 100%">개인정보 취급방침 </h6>
+            </div>
+            <div class="modal-body modal-overflow">
+                <div class="modal-body pt-30 pb-30 pl-30 pr-30">
+                    <div style="word-break:keep-all; font-size:17px;" id="clause_id2">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--// 개인정보 취급방침 모달 Modal web-->
+
+
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+
+        //2. 개인정보처리방침 호출
+        var type = 4;
+        var id = "clause_id" + type;
+
+        clauseCall(type, id)
+    });
+
+</script>
+
+<!-- 개인정보 취급방침 모달 Modal web-->
+<div class="modal fade modal-default" id="more-set-privacy-dmz" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header bg-color-gray-light" style="width: 100%">
+                <button type="button" class="close" data-dismiss="modal"><span class="closed"><span>닫기</span></span>
+                </button>
+                <h6 class="modal-title text-primary text-center" style="width: 100%">개인정보 처리방침</h6>
+            </div>
+            <div class="modal-body modal-overflow">
+                <div class="modal-body pt-30 pb-30 pl-30 pr-30">
+                    <div style="word-break:keep-all; font-size:17px;" id="clause_id4">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--// 개인정보 취급방침 모달 Modal web-->
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function() {
+
+        //3. 위치기반서비스 약관 불러오기
+        var type =3;
+        var id = "clause_id"+type;
+        clauseCall(type,id)
+    });
+</script>
+<!-- 위치기반서비스 이용약관 모달 Modal web-->
+
+<div class="modal fade modal-default" id="more-set-location" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header bg-color-gray-light" style="width: 100%">
+                <button type="button" class="close" data-dismiss="modal"><span class="closed"><span>닫기</span></span>
+                </button>
+                <h6 class="modal-title text-primary text-center" style="width: 100%">두루누비 위치기반서비스 이용약관</h6>
+            </div>
+            <div class="modal-body modal-overflow">
+                <div class="modal-body pt-30 pb-30 pl-30 pr-30">
+					 <div style="word-break:keep-all; font-size:17px; line-height:160%;"  id="clause_id3">
+						
+					 </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--// 위치기반서비스 이용약관 Modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 비밀번호 변경 안내 Modal -->
+<div class="modal fade modal-default" id="passwordChangeInfo"	tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-xs" role="document">
+		<div class="modal-content">
+			<div class="modal-header bg-color-gray-light">
+				<button type="button" class="close" data-dismiss="modal">
+					<span class="closed"><span>닫기</span></span>
+				</button>
+				<h6 class="modal-title text-primary text-center">비밀번호 변경 안내</h6>
+			</div>
+			<div
+				class="modal-alear text-center pt-20 pb-20 pl-20 pr-20 f12 bg-color-gray">
+				개인정보 보호와 안전한 두루누비 서비스 이용을 위해 <br /> 6개월마다 비밀번호 변경을 권장하고 있습니다.<br />
+				회원님의 소중한 개인정보 보호를 위해 비밀번호를 변경해 주세요.
+			</div>
+			<div class="modal-body">
+
+
+				<form>
+					<div class="row">
+						<div class="col-xs-12">
+							<p>현재 비밀번호</p>
+							<div class="form-group mb-12">
+								<input type="password" name="password_check" class="form-control" placeholder="비밀번호를 입력하세요" />
+							</div>
+						</div>
+					</div>
+				</form>
+
+				<p class="bold text-primary">비밀번호</p>
+				<form>
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="clearfix">
+								<p class="pull-left">새 비밀번호</p>
+								<p class="pull-right f10 mt-5 bold text-muted">
+									영문소문자, 숫자 포함 <span class="text-primary">6</span>자리 – <span
+										class="text-primary">12</span>자리
+								</p>
+							</div>
+							<div class="form-group mb-24">
+								<input type="password" name="new_password" class="form-control" placeholder="변경할 비밀번호를 입력하세요" />
+							</div>
+
+							<p>비밀번호 확인</p>
+							<div class="form-group mb-24">
+								<input type="password" name="new_password_confirm" class="form-control" placeholder="변경할 비밀번호를 입력하세요" />
+							</div>
+
+							<div class="clearfix">
+								<p class="pull-left">새 비밀번호 힌트</p>
+								<p class="pull-right f10 mt-5 bold text-muted input_count" data-target="input_pass_hints" data-max="30">
+									<strong class="text-primary count">0</strong> / 30자
+								</p>
+							</div>
+							<div class="form-group mb-12">
+								<input type="text" name="new_password_hint" class="form-control input_pass_hints" placeholder="비밀번호 힌트를 입력하세요" />
+							</div>
+
+						</div>
+					</div>
+				</form>
+
+
+			</div>
+			<div class="modal-footer pl-0 pt-0 pr-0 pb-0">
+
+
+				<div class="row ml-0 mr-0">
+					<div class="col-xs-6 pl-0 pr-0">
+						<button type="button" data-dismiss="modal" class="btn btn-dark btn-block border-round-0" onclick="postponePasswordChange();">일주일 뒤 변경하기</button>
+					</div>
+					<div class="col-xs-6 pl-0 pr-0">
+						<button type="button" class="btn btn-primary btn-block border-round-0" onclick="passwordChange();">변경하기</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<!-- // 비밀번호 변경 안내 Modal -->
+
+
+<script>
+	$('.input_count').each(function() {
+
+		var $count_total = $(this).data('max');
+		var $count = $('.count', this);
+
+		var target = $(this).data('target');
+
+		var $input = $('.' + target);
+
+		var maximumCount = $count.text() * 1;
+
+		var update = function() {
+			var before = $count.text() * 1;
+			var now = maximumCount + $input.val().length;
+
+			if (now == $count_total + 1) {
+				var str = $input.val();
+				//alert('글자 입력수가 초과하였습니다.');
+				$input.val(str.substr(0, $count_total));
+				now = $count_total;
+			}
+			if (before != now) {
+				$count.text(now);
+			}
+		};
+		$input.bind('input keyup paste', function() {
+			setTimeout(update, 0)
+		});
+		update();
+	});
+	
+	function password_recheck() {
+		$.ajax({
+            cache: false,
+            async: false,
+            type: "GET",
+            dataType: "json",
+            url: "/api/member/password/ChangeCheck",
+            success: function (result) { 
+            	if(result.response) {
+            		$('#passwordChangeInfo').modal();	
+            	}            	
+            }
+        });
+	}
+	
+	function passwordChange() {		
+		$.ajax({
+            cache: false,
+            async: false,
+            type: "GET",
+            data: {password:$("input[name=password_check]").val()},
+            dataType: "json",
+            url: "/api/member/password/check",
+            success: function (result) {
+            	if(result.response) {
+            		if(check_password()) {
+            			updatePassword();	
+            		}            		
+            	}else {
+            		alert("현재 비밀번호가 일치하지 않습니다.\n비밀번호를 다시 확인해 주세요.");	
+            	}            	
+            }
+        });	
+	}	
+	function updatePassword(){
+		$.ajax({
+            cache: false,
+            async: false,
+            type: "POST",
+            url: "/api/member/update",
+            data:{
+            	password:$("input[name=new_password]").val(),
+            	passwordHint:$("input[name=new_password_hint]").val(),
+            },
+            dataType: "json",
+            url: "/api/member/update",
+            success: function (result) {
+            	if(result.response){
+            		alert("비밀번호가 변경되었습니다.");
+            		$('#passwordChangeInfo').modal('hide')
+            	}else {
+            		alert("비밀번호를 변경하지 못하였습니다.\n다시 시도해주세요");
+            		location.reload();
+            	}
+            	
+            }
+        });	
+	}
+	
+	function check_password() {
+		var getCheck= RegExp(/^[A-Za-z0-9+]{6,12}$/);
+		var password = $("input[name=new_password]").val();
+		var confirmPassword = $("input[name=new_password_confirm]").val();
+		var passwordHint = $("input[name=new_password_hint]").val();
+		if(password != confirmPassword) {
+			alert('확인 할 비밀번호가 틀립니다.\n제대로 입력되었는지 확인하세요.');
+			return false;
+		}	
+        
+        if(!getCheck.test(password)) {            
+            alert('최소 6자 최대 12자 영문숫자 혼용');
+            return false;
+        }
+        
+        if(passwordHint == "") {
+        	alert('비밀번호 힌트를 입력해주세요');
+        	return false;
+        }
+        
+        if(passwordHint.indexOf(password) >= 0) {
+        	alert("비밀번호 힌트는\n비밀번호와 일치하거나 포함 하실 수 없습니다.");
+			return false;
+		}
+        
+        return true;
+	}
+	
+	function postponePasswordChange() {
+		$.ajax({
+            cache: false,
+            async: false,
+            type: "POST",
+            dataType: "json",
+            url: "/api/member/postpone",
+            success: function (result) {
+            	if(result.response) {
+            		location.reload();
+            	}
+            }
+        });		
+	}
+	
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 전자우편무단수집거부 Modal web-->
+<div class="modal fade modal-default" id="util-reject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content" style="width: 100%">
+            <div class="modal-header bg-color-gray-light" style="width: 100%">
+                <button type="button" class="close" data-dismiss="modal" style="width: 100%"><span class="closed"><span>닫기</span></span>
+                </button>
+                <h6 class="modal-title text-primary text-center" style="width: 100%">전자우편 무단 수집 거부</h6>
+            </div>
+            <div class="modal-body">
+                
+                <div class="modal-body pt-30 pb-30 pl-30 pr-30">
+                    
+                    <div class="txt mt-30">
+                        ■   본 웹사이트에 게시된 전자우편주소가 전자우편수집 프로그램이나 그 밖의 기술적 장치를 이용하여
+                        <br>무단으로 수집되는 것을 거부하며, 이를 위반시 정보통신망법에 의해 형사처벌됨을 유념하시기 바랍니다.
+                        <br>[게시일 2017년 03월 02일]
+                        <br>
+                        <br>■   이메일을 기술적 장치를 사용하여 무단으로 수집·판매·유통하거나 이를 이용한 자는
+                        <br>「정보통신망이용촉진및정보보호등에관한법률」 제50조의2 규정에 의하여 1천만원 이하의 벌금형에 처해집니다.
+                        <br>
+                        <br>■   정보통신망법 제50조의2 (전자우편주소의 무단 수집행위 등 금지)
+                        <br>
+                        <br>-누구든지 전자우편주소의 수집을 거부하는 의사가 명시된 인터넷 홈페이지에서 자동으로 전자우편주소를
+                        <br>수집하는 프로그램 그 밖의 기술적 장치를 이용하여 전자우편주소를 수집하여서는 아니된다.
+                        <br>
+                        <br>-누구든지 제1항의 규정을 위반하여 수집된 전자우편주소를 판매·유통하여서는 아니된다.
+                        <br>
+                        <br>-누구든지 제1항 및 제2항의 규정에 의하여 수집·판매 및 유통이 금지된 전자우편주소임을 알고 이를
+                        <br>정보전송에 이용하여서는 아니된다.
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--// 지도 자세히보기 Modal -->
+
+
+
+
+
+
+
+
+
+
+<script>
+    function alarmClick(obj){
+    	var data = $(obj).data('plan');
+    	if(data.status == 0) {
+    		$.ajax({
+                cache:false,
+                async:false,
+                type: "POST",
+                data: {push_idx:data.push_idx},
+                dataType: "json",
+                url: "/alarmChecked.do",
+                success: function(msg) {
+                	if(data.isShortcut == 1) {
+                		location.href="/link?push_idx=" + data.push_idx;
+                	}else {
+                		alarmCall();	
+                	}                	    	
+                }
+            });		
+    	} else {
+    		if(data.isShortcut == 1) {
+        		location.href="/link?push_idx=" + data.push_idx;
+        	}
+    	}       
+    }
+
+    /*처음 호출 시 불러오기*/
+    function alarmCall(){            
+        $.ajax({
+            cache:false,
+            async:false,
+            type: "GET",            
+            dataType: "json",
+            url: "/alarmList.do",
+            success: function(result) {
+            	$('#noticeViewList').empty();         
+            	
+            	if($("#alarmCnt").length > 0) {
+            		$("#alarmCnt").text(result.list_size);
+            	}           	
+            	            
+                $.each(result.list,function(index,data) {
+                	var htmlList = "";
+                
+                	var momentdate = moment(data.created_at);
+            		var dateformat = momentdate.format("YYYY-MM-DD");	
+            		
+            		if(data.status == '0') {
+            			htmlList = "<li class='list-group-item mb-10' onclick='alarmClick($(this))' data-plan='" + JSON.stringify(data) + "' data-idx='" + data.push_idx + "' data-type='"+ data.target_category + "' data-target='" + makeData(data) +"'>"
+                    	+ "<p class='font-size-10'>" + "<strong class='text-primary mr-10'>"+ alarmType(data.target_category) + "</strong>" + "<strong class='text-muted'>" + dateformat + "</strong></p>"
+                    	+ "<div class='font-size-12 text-muted'> <span class='text-black'></span>" + data.title + "</div> </li>";                    		
+            		}else {
+            			htmlList = "<li class='list-group-item mb-10 bg-color-gray-dark border-color-dark' onclick='alarmClick($(this))' data-plan='" + JSON.stringify(data) + "' data-idx='" + data.push_idx + "' data-type='"+ data.target_category + "' data-target='" + makeData(data) +"'>"
+                    	+ "<p class='font-size-10'>" + "<strong class='text-muted mr-10'>"+ alarmType(data.target_category) + "</strong>" + "<strong class='text-muted'>" + dateformat + "</strong></p>"
+                    	+ "<div class='font-size-12 text-muted'> <span class='text-muted'></span>" + data.title + "</div> </li>";
+            		}
+            		
+            		$('#noticeViewList').append(htmlList);                	
+                });
+                
+            }
+        });       
+    }
+    
+    function alarmType(type) {
+    	var response = "";
+    	switch(type) {
+    	case "EV" :
+    		response = "이벤트";
+    		break;
+    	case "NO":
+    		response = "공지";
+    		break;
+    	case "CO":        
+    		response = "여행지";
+    		break;
+    	case "TH":        	
+    		response = "테마";
+    		break;
+    	case "RE":
+    		response = "후기";
+    		break;
+    	default :
+    		response = "알림";
+    		break;
+    	}
+    	return response; 
+    }
+    
+    function makeData(data) {        	
+    	var result;
+    	switch(data.target_category) {
+    	case "EV":
+    		result = "" + data.event_id;
+    		break;
+    	case "NO":
+    		result = "" + data.notice_id;
+    		break;
+    	case "CO":
+    		result = "" + data.course_id;
+    		break;
+    	case "TH":
+    		result = "" + data.theme_id;
+    		break;
+    	case "RE":
+    		result = "" + data.review_id;
+    		break;        		
+    	}
+    	
+    	return result;
+    }    
+</script>
+
+<!-- 알림 Modal web-->
+<!-- 알림 Modal -->
+<div class="modal fade modal-default" id="noticeView" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-xs" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-color-gray-light">
+                <button type="button" class="close" data-dismiss="modal"><span class="closed"><span>닫기</span></span></button>
+                <h6 class="modal-title text-primary text-center">알림</h6>
+            </div>
+            <div class="modal-body modal-overflow modal-min">
+
+                <ul class="list-group" id="noticeViewList">
+
+                </ul>
+
+                
+            </div>
+
+        </div>
+    </div>
+</div> <!-- // 알림 Modal -->
+
+
+<!--// 알림 자세히보기 Modal -->
+
+
+
+
+
+
+
+
+
+<script>
+
+    /*모든 페이지에서 poi 버튼 호출 시 실행되는 함수*/
+    var poiClickPageCall = function (type, poiIdx) {
+        //TODO : not yet
+        //type : 호출하는 poi 타입. 타입은 정의하여 다시 전달드리겠습니다 (1-3-4P_action-follow-morecontents 참조)
+        //  "dot_poi" 형태로 호출하시면 관리자가 등록한 POI
+        //  "wpoint_poi" 호 호출하면 유저가 삽입한 컨텐츠 poi
+        //poiIdx : 선택한 점형정보 인덱스 값입니다.
+
+        $('#poiTitle').html('');
+        $('#poiBasicContents').html('');
+        $('#poiThumbnail').html('');
+        $('#poiContetns').html('');
+
+        /*poiGlobal 은 POI 정보가 저장되는 전역변수 -  네이버 , 다음맵 호출시 데이터 참조하고 있음에 공통 적용*/
+        if (poiGlobal[poiIdx].title == '' || poiGlobal[poiIdx].title == null || poiGlobal[poiIdx].title == undefined) {
+            $('#poiTitle').html('');
+        } else {
+            $('#poiTitle').html(poiGlobal[poiIdx].title);
+        }
+
+        if (poiGlobal[poiIdx].basic_contents == '' || poiGlobal[poiIdx].basic_contents == null || poiGlobal[poiIdx].basic_contents == undefined) {
+            $('#poiBasicContents').html('');
+        } else {
+            $('#poiBasicContents').html(poiGlobal[poiIdx].basic_contents);
+        }
+        if (poiGlobal[poiIdx].thumbnail_src == '' || poiGlobal[poiIdx].thumbnail_src == null || poiGlobal[poiIdx].thumbnail_src == undefined) {
+            $('#poiThumbnail').html('');
+        } else {
+            $('#poiThumbnail').html("<div class='img mt-30'><img src='" + poiGlobal[poiIdx].thumbnail_src + "' class='img-responsive' alt='' /></div>");
+        }
+
+        if (poiGlobal[poiIdx].content == '' || poiGlobal[poiIdx].content == null || poiGlobal[poiIdx].content == undefined) {
+            $('#poiContetns').html('');
+        } else {
+            $('#poiContetns').html(poiGlobal[poiIdx].content);
+        }
+
+        $('#hiddenPoiClick').click();
+    };
+
+    /*사용자 poi 버튼 호출 시 실행되는 함수*/
+    var userPoiClickPageCall = function (type, seq) {
+        //TODO : not yet
+        //type : 호출하는 poi 타입. 타입은 정의하여 다시 전달드리겠습니다 (1-3-4P_action-follow-morecontents 참조)
+        //  "dot_poi" 형태로 호출하시면 관리자가 등록한 POI
+        //  "wpoint_poi" 호 호출하면 유저가 삽입한 컨텐츠 poi
+        //poiIdx : 선택한 점형정보 인덱스 값입니다.
+
+        $('#poiUserTitle').html('');
+        $('#poiUserThumbnail').html('');
+        $('#poiUserBasicContents').html('');
+
+
+        var data = userPoiArr[seq];
+
+
+        /*poiGlobal 은 POI 정보가 저장되는 전역변수 -  네이버 , 다음맵 호출시 데이터 참조하고 있음에 공통 적용*/
+        if (data.title == '' || data.title == null || data.title == undefined) {
+            $('#poiUserTitle').html('');
+        } else {
+            $('#poiUserTitle').html(data.title);
+        }
+
+        if(data.type == 'PHOTO'){
+            var path;
+            path = "/editImgUp.do?filePath=" + data.data;
+
+            var contents = "" +
+                "<img alt='' class='img-responsive' src='"+path+"'>"
+            $('#poiUserThumbnail').html(contents);
+        }else if(data.type == 'MEMO'){
+
+        }else if(data.type == 'VOICE'){
+            var path;
+            
+            // path = data.data;
+
+            /*TODO : @대표님 사용자 POI 녹음 파일 부분*/
+            path = "/getVideo.do?save_path=" + data.data;
+
+            var contents = "" +
+                "<audio src='"+path+"' style='width:100%;' controls>"
+            $('#poiUserThumbnail').html(contents);
+        }else{
+
+        }
+
+        if (data.content == '' || data.content == null || data.content == undefined) {
+            $('#poiUserBasicContents').html('');
+        } else {
+            $('#poiUserBasicContents').html(data.content);
+        }
+
+
+        $('#hiddenUserPoiClick').click();
+    };
+</script>
+
+
+<input type="hidden" id="hiddenPoiClick" data-toggle="modal" data-target="#poiModal">
+<!-- POI 클릭 모달 Modal -->
+<div class="modal fade" id="poiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 1100;">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-color-gray-light none-border-bottom">
+                <button type="button" class="close" data-dismiss="modal"><span class="closed"><span>닫기</span></span>
+                </button>
+                <h6 class="modal-title text-primary bold text-center" id="poiType">여행지정보</h6>
+            </div>
+            <div class="modal-body pt-30 pb-30 pl-30 pr-30">
+                <h5 class="mt-0" id="poiTitle">점형정보 제목이 없습니다</h5>
+                <ul class="list-inline">
+                    <li class="text-success bold">기본정보</li>
+                </ul>
+                <ul class="list-inline">
+                    <li class="" id="poiBasicContents">주소 :</li>
+                    
+                </ul>
+
+                <div class="txt mt-30" id="poiThumbnail">
+
+                </div>
+                <div class="txt mt-30" id="poiContetns">
+                    여행지 정보 내용이 없습니다
+                </div>
+
+
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- // 지역문화행사 -->
+
+<input type="hidden" id="hiddenUserPoiClick" data-toggle="modal" data-target="#poiUserModal">
+<!-- POI 클릭 모달 Modal -->
+<div class="modal fade" id="poiUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index: 1100;">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-color-gray-light none-border-bottom">
+                <button type="button" class="close" data-dismiss="modal"><span class="closed"><span>닫기</span></span>
+                </button>
+                <h6 class="modal-title text-primary bold text-center" id="poiUserType">여행지정보</h6>
+            </div>
+            <div class="modal-body pt-30 pb-30 pl-30 pr-30">
+                <h5 class="mt-0" id="poiUserTitle">점형정보 제목이 없습니다</h5>
+
+                
+                <div class="txt mt-30" id="poiUserThumbnail">
+
+                </div>
+                <div class="txt mt-30" id="poiUserBasicContents">
+                    여행지 정보 내용이 없습니다
+                </div>
+
+
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- // 지역문화행사 -->
+
+
+
+
+
+
+
+
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+
+<script>
+    $(document).ready(
+      function(){
+          Kakao.init('a3673d4ff6136ff193e82a4c59866fb2');
+      }
+    );
+
+    /*카카오스토리 공유*/
+    function kakaostoryShareClick() {        
+        window.open('https://story.kakao.com/s/share?url=' +window.location.href, 'kakaostorysharedialog', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes, height=400,width=600');return false;
+    }
+
+
+    function sendSns(sns, url, txt)
+    {
+        var o;
+        var _url = encodeURIComponent(url);
+        var _txt = encodeURIComponent(txt);
+        var _br  = encodeURIComponent('\r\n');
+
+        url=window.location.href;        
+        // url='http://www.durunubi.kr';
+        switch(sns)
+        {
+            case 'facebook':
+                o = {
+                    method:'popup',
+                    url:'http://www.facebook.com/sharer/sharer.php?u=' + encodeURI(url) + 't=title'
+                };
+                break;
+
+            case 'twitter':
+                o = {
+                    method:'popup',
+                    url:'http://twitter.com/intent/tweet?text=' + _txt + '&url=' + _url
+                };
+                break;
+
+            case 'me2day':
+                o = {
+                    method:'popup',
+                    url:'http://me2day.net/posts/new?new_post[body]=' + _txt + _br + _url + '&new_post[tags]=epiloum'
+                };
+                break;
+
+            case 'kakaotalk':
+                o = {
+                    method:'web2app',
+                    param:'sendurl?msg=' + _txt + '&url=' + _url + '&type=link&apiver=2.0.1&appver=2.0&appid=dev.epiloum.net&appname=' + encodeURIComponent('Epiloum 개발노트'),
+                    a_store:'itms-apps://itunes.apple.com/app/id362057947?mt=8',
+                    g_store:'market://details?id=com.kakao.talk',
+                    a_proto:'kakaolink://',
+                    g_proto:'scheme=kakaolink;package=com.kakao.talk'
+                };
+                break;
+
+            case 'kakaostory':
+                o = {
+                    method:'web2app',
+                    param:'posting?post=' + _txt + _br + _url + '&apiver=1.0&appver=2.0&appid=dev.epiloum.net&appname=' + encodeURIComponent('Epiloum 개발노트'),
+                    a_store:'itms-apps://itunes.apple.com/app/id486244601?mt=8',
+                    g_store:'market://details?id=com.kakao.story',
+                    a_proto:'storylink://',
+                    g_proto:'scheme=kakaolink;package=com.kakao.story'
+                };
+                break;
+
+            case 'band':
+                o = {
+                    method:'web2app',
+                    param:'create/post?text=' + _txt + _br + _url,
+                    a_store:'itms-apps://itunes.apple.com/app/id542613198?mt=8',
+                    g_store:'market://details?id=com.nhn.android.band',
+                    a_proto:'bandapp://',
+                    g_proto:'scheme=bandapp;package=com.nhn.android.band'
+                };
+                break;
+
+            default:
+                alert('지원하지 않는 SNS입니다.');
+                return false;
+        }
+
+        switch(o.method)
+        {
+            case 'popup':
+                window.open(o.url);
+                break;
+
+            case 'web2app':
+                if(navigator.userAgent.match(/android/i))
+                {
+                    // Android
+                    setTimeout(function(){ location.href = 'intent://' + o.param + '#Intent;' + o.g_proto + ';end'}, 100);
+                }
+                else if(navigator.userAgent.match(/(iphone)|(ipod)|(ipad)/i))
+                {
+                    // Apple
+                    setTimeout(function(){ location.href = o.a_store; }, 200);
+                    setTimeout(function(){ location.href = o.a_proto + o.param }, 100);
+                }
+                else
+                {
+                    alert('이 기능은 모바일에서만 사용할 수 있습니다.');
+                }
+                break;
+        }
+    }
+
+    /*클립보드 복사*/
+    function clipboard(str) {        
+        $('#clip_target').val(str);
+        $('#clip_target').select();
+        if( is_ie() ) {
+            window.clipboardData.setData("Text", window.location.href);
+            alert("복사되었습니다.");
+            return;
+        }
+        prompt('컨트롤키와 C 키(Ctrl + C)를 동시에 눌러서 URL 을 복사하세요',window.location.href)
+        try {
+            var successful = document.execCommand('copy');
+            // alert('클립보드에 주소가 복사되었습니다. Ctrl + V 로 붙여넣기 하세요.');
+        } catch (err) {
+            alert('이 브라우저는 지원하지 않습니다.');
+        }
+    }
+    /*ie 확인*/
+    function is_ie() {
+        if(navigator.userAgent.toLowerCase().indexOf("chrome") != -1) return false;
+        if(navigator.userAgent.toLowerCase().indexOf("msie") != -1) return true;
+        if(navigator.userAgent.toLowerCase().indexOf("windows nt") != -1) return true;
+        return false;
+    }
+
+    //<![CDATA[
+    // // 사용할 앱의 JavaScript 키를 설정해 주세요.
+    // Kakao.init('f5cdf39bfbc2024e1a7a4e9f1c32dcb3');
+    // // 카카오링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
+    function sendLink() {
+        var description = $('#opdescription').val;
+        var title = $('#optitle').val();
+        var image= $('#opimage').val;
+        var url=window.location.href;
+
+        if(window.location.href.indexOf('dmz') > -1 ){
+            //dmz는 앱으로 볼수 없어 앱 버튼을 제거
+            Kakao.Link.sendDefault({
+                objectType: 'feed',
+                content: {
+                    title: title,
+                    description: '',
+                    imageUrl: '',
+                    link: {
+                        mobileWebUrl: encodeURI(url),
+                        webUrl: encodeURI(url)
+                    }
+                },
+                social: {
+
+                },
+                buttons: [
+                    {
+                        title: '웹으로 보기',
+                        link: {
+                            mobileWebUrl: url,
+                            webUrl: url
+                        }
+                    }
+                ]
+            });
+        }else{
+            Kakao.Link.sendDefault({
+                objectType: 'feed',
+                content: {
+                    title: title,
+                    description: '',
+                    imageUrl: '',
+                    link: {
+                        mobileWebUrl: encodeURI(url),
+                        webUrl: encodeURI(url)
+                    }
+                },
+                social: {
+
+                },
+                buttons: [
+                    {
+                        title: '웹으로 보기',
+                        link: {
+                            mobileWebUrl: url,
+                            webUrl: url
+                        }
+                    },
+                    {
+                        title: '앱으로 보기',
+                        link: {
+                            mobileWebUrl: url,
+                            webUrl: url
+                        }
+                    }
+                ]
+            });
+        }
+
+    }
+    //]]>
+
+    function shareStory() {
+        var url=window.location.href;
+        var title = $('#optitle').val();        
+        Kakao.Story.share({
+            url: url,
+            text: title
+        });
+    }
+
+</script>
+
+
+<input type="hidden" id="optitle" value=""/>
+<input type="hidden" id="opdescription" value=""/>
+<input type="hidden" id="opimage" value="/editImgUp.do?filePath="/>
+
+<input type="hidden" id="hiddenShareClick" data-toggle="modal" data-target="#shareModal">
+<!-- 공유 변경 안내 Modal -->
+<!-- Share Modal -->
+<div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-color-gray-light none-border-bottom">
+                <button type="button" class="close" data-dismiss="modal"><span class="closed"><span>닫기</span></span></button>
+                <h6 class="modal-title text-primary bold text-center">공유하기</h6>
+            </div>
+            <div class="modal-body">
+                <h6 class="text-center mb-30">공유하실 SNS를 선택해주세요.</h6>
+
+                <script>
+                    $(document).ready(function () {
+                            var text;
+                            text = "<a class=\"pl-2 pr-2 fb-xfbml-parse-ignore\" title=\"페이스북 공유하기\"  data-href=\""+encodeURIComponent(window.location.href)+"\" data-layout=\"button\" data-size=\"small\" data-mobile-iframe=\"false\" target=\"_blank\" href=\"https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(window.location.href)+"\" onClick=\"window.open(this.href, '', 'width=400, height=600'); return false;\">\n" +
+                                "                        <i class=\"icon-facebook\"></i>\n" +
+                                "                    </a>"
+                            $("#fb_insert").prepend(text);
+                    });
+                </script>
+                <div class="text-center mb-30" id="fb_insert">
+                    <script>(function(d, s, id) {
+                        var js, fjs = d.getElementsByTagName(s)[0];
+                        if (d.getElementById(id)) return;
+                        js = d.createElement(s); js.id = id;
+                        js.src = 'https://connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v3.2';
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }(document, 'script', 'facebook-jssdk'));
+                    </script>
+
+
+
+
+                    
+
+                    <a href="#" class="pl-2 pr-2" title="카카오톡 공유하기" onclick="sendLink()">
+                        <i class="icon-kakao"></i>
+                    </a>
+                    <a href="#" class="pl-2 pr-2" title="카카오 스토리 공유하기"  onclick="shareStory()">
+                        <i class="icon-story"></i>
+                    </a>
+                    <a href="#" class="pl-2 pr-2" title="URL 공유하기" onclick="clipboard()">
+                        <i class="icon-url"></i>
+                    </a>
+                </div>
+
+				<!-- 
+                <div class="text-center mb-30">
+                    <button type="button" class="btn btn-primary btn-line btn-small" data-dismiss="modal">확인</button>
+                </div>
+				-->
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- 20190114 추가 -->
+	<!-- QRcode Modal -->
+	<div class="modal fade modal-default" id="app_QRcode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header bg-color-gray-light">
+					<button type="button" class="close" data-dismiss="modal"><span class="closed"><span>닫기</span></span></button>
+					<h6 class="modal-title text-center text-primary">앱 다운받기</h6>
+				</div>
+				<div class="modal-body">
+					<h5 class="mt-8 mb-20 text-center">여행을 즐기는 또 다른 방법<br/>두루누비 APP</h5>
+					<p class="text-center text-muted mb-30">
+						코스 안내부터 여행기록까지 가능한  APP을 다운로드 받아보세요.<br/>아래 QR코드를 휴대폰 카메라로 찍으시면 다운로드 가능합니다.
+					</p>
+					<div class="row">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+							<img alt="" src="./images/android_qr.png" class="pull-right" style="max-width:100%">
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+							<img alt="" src="./images/ios_qr.png" class="pull-left" style="max-width:100%">
+						</div>
+					</div>
+					<div class="row mb-40">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center text-primary">
+							<span style="width:175px; max-width:100%; display:inline-block" class="pull-right">[Android]</span>
+
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center text-primary">
+							<span style="width:175px; max-width:100%; display:inline-block" class="pull-left">[IOS]</span>
+						</div>
+					</div>
+					<p class="text-center text-muted mb-15">* Android 4.4 / iOS 10 이상 버젼 지원</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- //QRcode Modal -->
+	<!-- 20190114 추가 //-->
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#favoriteAdd').on('click', function (e) {
+            var bookmarkURL = window.location.href;
+            var bookmarkTitle = document.title;
+            var triggerDefault = false;
+            if (window.sidebar && window.sidebar.addPanel) {
+                // Firefox version < 23
+                window.sidebar.addPanel(bookmarkTitle, bookmarkURL, '');
+            } else if ((window.sidebar && (navigator.userAgent.toLowerCase().indexOf('firefox') > -1)) || (window.opera && window.print)) {
+                // Firefox version >= 23 and Opera Hotlist
+                var $this = $(this); $this.attr('href', bookmarkURL); $this.attr('title', bookmarkTitle); $this.attr('rel', 'sidebar'); $this.off(e); triggerDefault = true; } else if (window.external && ('AddFavorite' in window.external)) { // IE Favorite
+                window.external.AddFavorite(bookmarkURL, bookmarkTitle);
+            } else {
+                // WebKit - Safari/Chrome
+                alert((navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Cmd' : 'Ctrl') + '+D 키를 눌러 즐겨찾기에 등록하실 수 있습니다.');
+            }
+            return triggerDefault;
+        });
+
+        $('#favoriteAddApp').on('click', function (e) {
+            var bookmarkURL = window.location.href;
+            var bookmarkTitle = document.title;
+            var triggerDefault = false;
+            if (window.sidebar && window.sidebar.addPanel) {
+                // Firefox version < 23
+                window.sidebar.addPanel(bookmarkTitle, bookmarkURL, '');
+            } else if ((window.sidebar && (navigator.userAgent.toLowerCase().indexOf('firefox') > -1)) || (window.opera && window.print)) {
+                // Firefox version >= 23 and Opera Hotlist
+                var $this = $(this); $this.attr('href', bookmarkURL); $this.attr('title', bookmarkTitle); $this.attr('rel', 'sidebar'); $this.off(e); triggerDefault = true; } else if (window.external && ('AddFavorite' in window.external)) { // IE Favorite
+                window.external.AddFavorite(bookmarkURL, bookmarkTitle);
+            } else {
+                // WebKit - Safari/Chrome
+                alert((navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Cmd' : 'Ctrl') + '+D 키를 눌러 즐겨찾기에 등록하실 수 있습니다.');
+            }
+            return triggerDefault;
+        });
+    });
+
+    /*전체지도 호출*/
+    function openBigMap(type) {
+		$('#walkBikeMap').modal('toggle');
+	}
+</script>
+
+
+
+<script>
+    function backPage() {
+        history.back();
+    }
+</script>
+
+
+
+<script>
+    /**
+     * 중복서브밋 방지
+     *
+     * @returns {Boolean}
+     */
+    var doubleSubmitFlag = false;
+    function doubleSubmitCheck(){
+        if(doubleSubmitFlag){
+            return doubleSubmitFlag;
+        }else{
+            doubleSubmitFlag = true;
+            return false;
+        }
+    }
+
+</script>
+
+
+
+<script>
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+</script>
+
+
+
+<script>
+    /*이용약관 불러오는 API 호출 공통함수*/
+    function clauseCall(type,id) {
+        $.ajax({
+            cache:false,
+            async:false,
+            type: "GET",
+            data : {type : type},
+            dataType: "json",
+            url: "/api/clauseCall",
+            success: function(result) {
+                var data =result.response;
+                // console.log(data);
+                // console.log(id);
+                $('#'+id).html(data.contents);
+            }
+        });
+    }
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function() {
+      $('#loading').hide();
+    });
+
+    function progressShow(){
+        $('#loading').show();
+    }
+    function progressHide(){
+        $('#loading').hide();
+    }
+
+</script>
+<!-- Progress -->
+<div id="loading" style="z-index: 5000; display: none;">
+
+  <div class="load">
+    <div class="cons text-center">
+      <div class="pt-10">
+         <div class="logo"><span>두루누비 KOREA MOBLITY</span></div>
+      </div>
+      <div class="mb-15 mt-5">
+        <span class="point point01"></span>
+        <span class="point point02"></span>
+        <span class="point point03"></span>
+        <span class="point point04"></span>
+        <span class="point point05"></span>
+      </div>
+      <div>
+        <strong>잠시만 기다려 주세요</strong>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+
+<!-- header -->
+
+<header class="sub" data-spy="affix" data-offset-top="160">
+    <nav class="top-nav">
+        <div class="container clearfix">
+            <div class="etc-menu">
+                <ul>
+					<li><a href="#" id="favoriteAdd">즐겨찾기</a></li>
+					<li><a href="#" title="도움말 레이어 팝업" id="more-set-tutorial" data-toggle="modal" data-target="#more-set-tutorial-modal">도움말</a></li>
+					<li><a href="#" title="앱다운받기 팝업" data-toggle="modal" data-target="#app_QRcode">앱다운받기</a></li>
+                </ul>
+            </div>
+            <div class="user-menu">
+                <ul>
+			
+				<li><a href="#" title="로그인 레이어 팝업" data-toggle="modal" data-target="#userLogin">로그인</a></li>
+				<li><a href="/12-1-0-join.do">회원가입</a></li>
+			 					
+			
+                    <li><a href="/9-3-0-announce-faq.do">고객지원</a></li>
+                    
+
+                    
+                    
+                    
+                    
+                    
+
+                    
+                 
+                    <li>&nbsp;&nbsp;</li>
+                    
+                    <!-- 사이트맵 -->
+                    <!-- Tab -->
+                    <!-- 탭 메뉴활성화 값 넘겨주기 위한 파라메터 tabState1 : 대메뉴 값	-->
+                                            
+                    
+
+
+
+
+
+
+
+<script>
+  function noSession() {
+      if(confirm('로그인후 사용가능합니다 로그인 하시겠습니까?')){
+          $('#userLogin').modal();
+      }
+  }
+</script>
+
+
+<li><a href="#사이트맵" class="sitemap" title="사이트맵 레이어 열기"></a>
+  <!-- 사이트맵 -->
+  <div class="header-sitemap">
+    <button class="header-sitemap-close"><span>사이트맵 닫기</span></button>
+    <div class="header-sitemap-head">
+      <div class="hidden-xs">전체메뉴</div>
+
+	  <div class="hidden-xs pull-right btn-home">
+	    <a href="/" class="text-left text-white">
+		  <i class="icon-home-white mr-5 mt--5"></i> 두루누비 메인
+		</a>
+ 	  </div>
+      <div class="hidden-lg hidden-md hidden-sm">
+        <div class="clearfix">         
+            
+            
+			<div class="pull-left">
+			<a class="underline text-white" data-toggle="modal" data-target="#userLogin" href="#">로그인</a>을 해주세요.
+			</div>
+			<div class="pull-right">
+			<a href="./12-1-0-join.do" class="text-white"><i class="ion ion-ios-log-in"></i></a>
+			</div>				
+			 					
+			            
+            
+		</div>
+      </div>
+    </div>
+
+    <div class="hidden-lg hidden-md hidden-sm">
+      <a href="/" class="btn btn-dark btn-block text-left border-round-0">
+        <i class="icon-home-white mr-5 mt--5"></i> 두루누비 메인으로
+      </a>
+    </div>
+
+    <div class="header-sitemap-content on">
+
+      <ul class="depth01 clearfix">
+        <li >
+          <span>걷기여행</span>
+          <ul class="depth02">
+            <li ><a href="/4-1-0-walk-theme.do">테마별 걷기길</a></li>
+            <li ><a href="/4-2-0-walk-mobility.do">걷기길 검색</a></li>
+            <li ><a href="/4-3-0-walk-traveler.do">전문가 추천길</a></li>
+          </ul>
+        </li>
+        <li >
+          <span>자전거여행</span>
+          <ul class="depth02">
+            <li ><a href="/5-1-0-cycle-theme.do">테마별 자전거길</a></li>
+            <li ><a href="/5-2-0-cycle-mobility.do">자전거길 검색</a></li>
+            <li ><a href="/5-3-0-cycle-traveler.do">전문가 추천길</a></li>
+          </ul>
+        </li>
+        <li >
+          <span>후기</span>
+          <ul class="depth02">
+            <li ><a href="/7-0-0-review.do">여행기록</a></li>
+            
+          </ul>
+        </li>
+        <li >
+          <span>소식정보</span>
+          <ul class="depth02">
+            <li >
+              <a href="#" class="open_3depth" title="3뎁스메뉴 열기 닫기">여행기사</a>
+              <ul class="depth03">
+                <li ><a href="/8-1-2-info-commentary-recommend.do">이 달의 추천길</a></li>
+                <li ><a href="/8-1-4-info-commentary-blog.do">여행취재</a></li>
+                <li ><a href="/8-1-3-info-commentary-festival.do">지역축제 행사</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="open_3depth" title="3뎁스메뉴 열기 닫기">동영상</a>
+              <ul class="depth03">
+                <li><a href="/8-2-0-info-streaming.do?category=9">걷기</a></li>
+                <li><a href="/8-2-0-info-streaming.do?category=10">자전거</a></li>
+                <li><a href="/8-2-0-info-streaming.do?category=11">VR</a></li>
+                <li><a href="/8-2-0-info-streaming.do?category=12">축제</a></li>
+              </ul>
+            </li>
+            <li ><a href="/8-4-0-info-notice.do">공지사항</a></li>
+            <li ><a href="/8-3-0-info-event.do">이벤트</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="depth01 clearfix">        
+        <li >
+          <span>고객지원 </span>
+          <ul class="depth02">
+            <li ><a href="/9-3-0-announce-faq.do">FAQ</a></li>
+            <li ><a href="/9-4-1-announce-library-course.do">자료실</a></li>
+            <li ><a href="/9-4-2-announce-library-organization.do">유관단체 소개</a></li>
+          </ul>
+        </li>
+
+        
+        
+		
+
+		
+		<li style="min-height:1px;"></li>
+		
+		
+		<li>
+          <span >해파랑길</span>
+          <ul class="depth02">
+		  	<li ><a href="/haeparang-main.do">해파랑길 메인</a></li>
+            <li>
+              <a href="#" class="open_3depth " title="3뎁스메뉴 열기 닫기">해파랑길이란</a>
+              <ul class="depth03">
+                <li ><a href="/haeparang-introduce.do">해파랑길 소개</a></li>
+                <li ><a href="/haeparang-introduce-guide.do">안내 체계</a></li>
+                <li ><a href="/haeparang-introduce-travel.do">여행 가이드</a></li>
+                <li ><a href="/haeparang-introduce-local.do">지역별 연락처</a></li>
+                <li ><a href="/haeparang-introduce-traffic.do">교통편 안내</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="open_3depth" title="3뎁스메뉴 열기 닫기">해파랑길 여행</a>
+              <ul class="depth03">
+                <li ><a href="/haeparang-travel.do">해파랑길 구간</a></li>
+                <li ><a href="/haeparang-review.do">해파랑길 후기</a></li>
+              </ul>
+            </li>
+            <li ><a href="/haeparang-notice.do">공지사항</a></li>
+            
+          </ul>
+        </li>
+
+		<li>
+          <span >DMZ 평화의길</span>
+          <ul class="depth02">
+		  	<li ><a href="/dmz-main.do">DMZ 평화의길 메인</a></li>
+		  	<li ><a href="/dmz-travel.do">방문신청</a></li>
+            <li>
+              <a href="#" class="open_3depth " title="3뎁스메뉴 열기 닫기">DMZ 평화의길 이란</a>
+              <ul class="depth03">
+                <li ><a href="/dmz-introduce.do">DMZ 평화의길 소개</a></li>
+                <li ><a href="/dmz-introduce-guide.do">신청 및 절차</a></li>
+                <li ><a href="/dmz-introduce-traffic.do">집결지 안내</a></li>
+              </ul>
+            </li>            
+			<li ><a href="/dmz-info-notice.do">이용방법/유의사항</a></li>
+			<li ><a href="/dmz-info-faq.do">FAQ</a></li>
+            <li ><a href="/dmz-travel-view-certify-inquiry.do">동반자인증</a></li>
+          </ul>
+        </li>
+
+		<!-- 
+        <li >
+          <span>회원</span>
+          <ul class="depth02">
+          
+			<li ><a href="./12-1-0-join.do">회원가입</a></li>
+			<li><a href="#"  data-toggle="modal" data-target="#userLogin">로그인</a></li>
+          
+                      
+          </ul>
+          <div class="btn-groups">
+            <a href="/" class="btn btn-primary btn-line btn-block mb-10">두루누비 메인</a>
+            <a href="/haeparang-main.do"class="btn btn-warning btn-line btn-block mb-10">해파랑길 메인</a>
+            <a href="#" class="btn btn-dark btn-line btn-block" data-toggle="modal" data-target="#app_QRcode">APP 다운로드</a>
+          </div>
+        </li>
+		-->
+      </ul>
+
+    </div>
+
+    <div class="header-sitemap-footer hidden-lg hidden-md hidden-sm">
+      <p>Copyright by KTO. ALL RIGHTS RESERVED.</p>
+      <ul class="list-unstyled">
+        <li><a href="#" id="favoriteAddApp">즐겨찾기</a></li>
+        <li><a href="#" title="도움말 레이어 팝업" data-toggle="modal" data-target="#more-set-tutorial-modal">도움말</a></li>
+		<li><a href="#" title="앱다운받기 팝업" data-toggle="modal" data-target="#app_QRcode">앱다운받기</a></li>
+      </ul>
+    </div>
+
+  </div>
+  <!-- //사이트맵 -->
+
+</li>
+
+
+
+
+
+                    <!-- // Tab -->
+                    <!-- //사이트맵 -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <nav class="main-nav">
+        <div class="container clearfix">
+            <a href="/" class="logo" title="메인으로 이동"><span>두루누비 KOREA MOBLITY</span></a>
+            <ul class="main-menu">
+                <li ><a href="/4-1-0-walk-theme.do">걷기여행</a>
+                    <ul class="sub">
+                        <li ><a href="/4-1-0-walk-theme.do">테마별 걷기길</a></li>
+                        <li ><a href="/4-2-0-walk-mobility.do">걷기길 검색</a></li>
+                        <li ><a href="/4-3-0-walk-traveler.do">전문가 추천길</a></li>
+                    </ul>
+                </li>
+                <li ><a href="/5-1-0-cycle-theme.do">자전거여행</a>
+                    <ul class="sub">
+                        <li ><a href="/5-1-0-cycle-theme.do">테마별 자전거길</a></li>
+                        <li ><a href="/5-2-0-cycle-mobility.do">자전거길 검색</a></li>
+                        <li ><a href="/5-3-0-cycle-traveler.do">전문가 추천길</a></li>
+                    </ul>
+                </li>
+                <li ><a href="/7-0-0-review.do">여행후기</a>                    
+                </li>
+                <li ><a href="/8-1-2-info-commentary-recommend.do">여행안내</a>
+                    <ul class="sub">
+                        <li ><a href="/8-1-2-info-commentary-recommend.do">여행기사</a></li>
+                        <li ><a href="/8-2-0-info-streaming.do">동영상</a></li>
+                        <li ><a href="/8-3-0-info-event.do">이벤트</a></li>
+                        <li ><a href="/8-4-0-info-notice.do">공지사항</a></li>
+                    </ul>
+                </li>
+                <li><a href="/haeparang-main.do">해파랑길</a>
+                </li>
+                <li>
+                
+                    <a href="/dmz-main.do">DMZ 평화의길</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+</header>
+<!-- // header -->
+
+
+	<!-- contents -->
+	<div id="contents">
+		<!-- content -->
+		<div id="content">
+
+			<div class="container error-404">
+				<div class="text-center mt-40 mb-30"><i class="icon-404"></i></div>
+				<h1 class="text-center mb-30">요청하신 페이지를 찾을 수 없습니다.</h1>
+				<p class="h6 text-center text-color-gray mb-30">
+					서비스 이용에 불편을 드려 죄송합니다. <br />
+					요청하신 페이지는 주소가 잘못 입력되었거나, 페이지 주소 변경 또는 삭제, <br />
+					혹은 일시적인 오류로 인해 접근에 실패하였습니다.<br />
+					아래의 버튼을 눌러 재시도 하시거나, 잠시 후에 이용해 주십시요.
+				</p>
+				<p class="h6 text-center mb-60">
+					지속적인 오류가 발생한다면 <span class="text-danger">고객센터</span>로 문의주시길 바랍니다.
+				</p>
+				<div class="text-center">
+					<a href="#" class="btn btn-dark btn-m-block m-mb-10" onclick="backPage()">이전 페이지로 이동하기</a>
+					<a href="/" class="btn btn-primary btn-m-block">메인으로 이동하기</a>
+				</div>
+			</div>
+
+		</div><!-- //content -->
+
+	</div><!-- // contents -->
+
+
+
+	
+	
+
+
+
+
+<footer>
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-7">
+                    <ul>
+                        
+                        <li><a href="#" data-toggle="modal" data-target="#more-set-location">위치기반서비스 이용약관</a></li>
+                        
+                        <li><a href="#" data-toggle="modal" data-target="#more-set-terms">회원약관</a></li>
+                        
+                        <li><a href="./13-4P-0-util-about.do">두루누비소개</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-5">
+                    <label class="select up">
+                        <select class="form-control"
+                                onchange="window.open(this.options[this.selectedIndex].value,'_blank')">
+                            <option>패밀리 사이트 바로가기</option>
+                            <option value="https://blog.naver.com/koreatrails">네이버 블로그 바로가기</option>
+                            <option value="https://www.facebook.com/durunubi.kr">페이스북 바로가기</option>
+                            <option value="https://www.instagram.com/durunubi/">인스타그램 바로가기</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    (26464) 강원도 원주시 세계로 10 (반곡동) 한국관광공사<br/>
+                    사업자등록번호 : 202-81-50707 통신판매업신고 : 제2009-서울중구-1234호<br/>
+                    Copyright by KTO. ALL RIGHTS RESERVED.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-93931715-1"></script>
+    <script>
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-93931715-1');
+    </script>
+
+
+	
+	
+
+	
+</body>
+
+
+</html>

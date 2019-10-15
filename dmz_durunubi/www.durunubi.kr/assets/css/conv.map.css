@@ -1,0 +1,163 @@
+
+
+.conv .containerCs {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.conv .box {
+    -moz-border-image: -moz-linear-gradient(45deg, #2bc63e 0%, #1553a3 100%);
+    -webkit-border-image: -webkit-linear-gradient(45deg, #2bc63e 0%, #1553a3 100%);
+    border-image: linear-gradient(45deg, #2bc63e 0%, #1553a3 100%);
+    border-image-slice: 1;
+    border-width: 1px;
+    background-color: white;
+    border: 1px solid #d2d2d2;
+    position: absolute;
+    top: 100px;
+    left: 58px;
+    width: 274px;
+    height: 290px;
+    padding: 72px 24px;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+/* ICON */
+.conv .arrow {
+    border: solid #000000;
+    border-width: 0 1px 1px 0;
+    display: inline-block;
+    margin-top: -7px;
+    padding: 4px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    position: absolute;
+    top: 50%;
+    right: 12.3px;;
+}
+
+/* FORM */
+.conv .form > * {
+    margin-bottom: 24px
+}
+
+.conv .title {
+    background-color: #f7fcf8;
+    color: #2bc63e;
+    width: 100%;
+    font-family: NanumGothic;
+    font-size: 12px;
+    line-height: 40px;
+    letter-spacing: -1px;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.conv .selectMap {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+.conv .selectType {
+    display: inline-block;
+    width: 100%;
+}
+
+.conv .result {
+    text-align: center;
+}
+
+.conv .formTitle {
+    display: block;
+    text-align: left;
+    margin-bottom: 4px;
+    font-size: 12px
+}
+
+.conv .form input {
+    display: none;
+}
+
+.conv .form label {
+    color: #666666;
+    background-color: #f2f2f2;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: -0.4px;
+    text-align: center;
+    width: 70px;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    vertical-align: top;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.conv .form input:checked + label {
+    border: 1px solid #2bc63e;
+    background-color: #fff;
+    color: #2bc63e;
+}
+
+.conv .form .select {
+    position: relative;
+}
+
+.conv .form select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    color: #000000;
+    border: 1px solid #f2f2f2;
+    background: white;
+    border-radius: 4px;
+    display: block;
+    padding-left: 12px;
+    width: 100%;
+    text-align: center;
+    width: 100%;
+    height: 30px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.conv .button {
+    color: #666666;
+    border: 1px solid #999999;
+    background-color: #fff;
+    border-radius: 4px;
+    display: inline-block;
+    margin: 0 2%;
+    width: 80px;
+    height: 32px;
+    font-size: 10px;
+    text-align: center;
+    line-height: 28px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.conv .button.on {
+    border: 1px solid #2bc63e;
+    background-color: #fff;
+    color: #2bc63e;
+}

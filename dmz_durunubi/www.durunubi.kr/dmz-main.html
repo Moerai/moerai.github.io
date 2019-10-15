@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<head>
+	<!-- Meta, title, CSS, favicons, etc. -->
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta name="Keywords" content=""/>
+	<meta name="Description" content=""/>
+	<meta property="og:url" content="https://www.durunubi.kr:443/dmz-main.do?"/>
+    <meta property="og:image" content="images/logo.png"/>
+    
+	<title>DMZ 평화의길</title>
+
+	<link rel="shortcut icon" href="images/favicon.ico">
+
+	<!-- CSS
+    ================================================== -->
+	<link rel="stylesheet" href="../code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	
+	<link rel="stylesheet" type="text/css" href="assets/css/style.min.css"/>
+	<link href="assets/css/swiper/swiper.min.css" rel="stylesheet" type="text/css" media="all"/>
+	<link href="assets/css/conv.map.css" rel="stylesheet" type="text/css" media="all"/>
+
+
+	<!-- JavaScript
+    ================================================== -->
+	<script src="assets/javascripts/jquery-3.3.1.min.js"></script>
+	<script src="../code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="assets/javascripts/bootstrap.min.js"></script>
+	
+	<script src="assets/javascripts/swiper/swiper.min.js"></script>
+	<script src="assets/javascripts/lightbox.min.js"></script>
+	<script src="assets/javascripts/background-clip-text-polyfill.js"></script>
+	<script src="assets/javascripts/common_script.js"></script>
+	<script src="assets/javascripts/login.js"></script>
+	<script src="assets/javascripts/jquery.easy-autocomplete.min.js"></script>
+	<script src="assets/javascripts/utils.js"></script>
+	<script src="assets/javascripts/moment.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src="../js/carousel.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/carousel.css">
+
+</head>
+    
+<body>
+<!-- skip -->
+<a class="skip" href="javascript:void(0);">본문으로 바로가기</a> <!-- //skip -->
+<script src="../cdn.polyfill.io/v2/polyfill.min.js" async defer></script>
+
+<input type="hidden" id="optitle" value=""/>
+<input type="hidden" id="opdescription" value=""/>
+<input type="hidden" id="opimage" value="/editImgUp.do?filePath="/>
+
+<input type="hidden" id="hiddenShareClick" data-toggle="modal" data-target="#shareModal">
+
+<script>
+    function backPage() {
+        history.back();
+    }
+</script>
+
+
+
+
+<header class="sub" data-spy="affix" data-offset-top="160">
+	<nav class="main-nav heaparang nav-dmz">
+		<div class="container clearfix">
+			<a href="dmz-main.html" class="logo dmz" title="DMZ 평화의길 메인으로 이동"><span>DMZ 평화의길 KOREA MOBLITY</span></a>
+			<ul class="main-menu">
+				<li class="">
+					<a href="dmz-introduce.html">DMZ 평화의길이란</a>
+				</li>
+				<li class="">
+					<a href="dmz-travel.html">방문신청</a>
+				</li>
+				<li class="">
+					<a href="dmz-info-notice.html">이용방법/유의사항</a>
+				</li>
+				<li class="">
+					<a href="dmz-info-faq.html">FAQ</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+</header>
+
+<style>
+.main-view-dmz img{
+position: absolute; top:0; left: 0;
+width: 100%;
+height: 100%;
+}    
+</style>
+<!-- contents -->
+<div id="contents">
+    <div id="carousel_section">
+		<ul>
+			<li> 
+                <div class="main-view-dmz">
+                    <img src="images/main-dmz.png" >
+                    <div class="container" style="text-align: center; padding-top: 170px">
+                            <h2 class="mt-">길이 열린다, 평화를 걷는다.</h2>
+                            <h1 class="mb-0">DMZ 평화의길</h1>
+                    </div>  
+               </div>  
+            </li>
+            <li> 
+                <div class="main-view-dmz">
+                    <img src="images/heaparang-gil-03.png" >
+                    <div class="container" style="text-align: center; padding-top: 170px">
+                            <h2 class="mt-0">길이 열린다, 평화를 걷는다.</h2>
+                            <h1 class="mb-0">DMZ 평화의길</h1>
+                    </div>  
+               </div>  
+            </li>
+            <li> 
+                <div class="main-view-dmz">
+                    <img src="images/intro03.png" >
+                    <div class="container" style="text-align: center; padding-top: 170px">
+                            <h2 class="mt-0">길이 열린다, 평화를 걷는다.</h2>
+                            <h1 class="mb-0">DMZ 평화의길</h1>
+                    </div>  
+               </div>  
+            </li>
+            <li> 
+                <div class="main-view-dmz">
+                    <img src="images/heaparang-gil-06.png" >
+                    <div class="container" style="text-align: center; padding-top: 170px">
+                            <h2 class="mt-0">길이 열린다, 평화를 걷는다.</h2>
+                            <h1 class="mb-0">DMZ 평화의길</h1>
+                    </div>  
+               </div>  
+            </li>
+        </ul>
+	</div>
+	<!-- DMZ 평화의길 여행 -->
+	<div class="pt-80 pb-100 bg-color-gray main-theme-wrap dmz-theme-wrap" style="background-image:url(images/bg-main-theme-dmz.png);">
+		<div class="container">
+			<div class="clearfix mb-60">
+				<h2 class="h1 mt-0 mb-0 pull-left">
+					<span class="highlight-dmz">DMZ 평화의길 여행</span>
+				</h2>
+				<div class="pull-right mt-13 m-mt-0">
+					<a href="dmz-travel.html" class="plus_more"><span>여행 더보기</span></a>
+				</div>
+			</div>
+            <div class="row">
+				
+					<div class="col-lg-12 col-md-6 col-sm-6 col-xs-6">
+						<a href="dmz-travel-view6755.html?crsIdx=IDX00000000000000011" class="card thumbnail poster shadow" style="background-image: url('dmz/imagee585.png?id=IDX00000000000000110');">
+							<div class="caption">
+								<h4>파주 코스 (도보 및 차량)</h4>
+								<p class="tag type2">분단의 상징에서 평화의 명소로</p>
+							</div>
+							
+						</a>
+					</div>
+                </div>
+			<div class="row">
+				
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<a href="dmz-travel-view6755.html?crsIdx=IDX00000000000000011" class="card thumbnail poster shadow" style="background-image: url('dmz/imagee585.png?id=IDX00000000000000110');">
+							<div class="caption">
+								<h4>파주 코스 (도보 및 차량)</h4>
+								<p class="tag type2">분단의 상징에서 평화의 명소로</p>
+							</div>
+							
+						</a>
+					</div>
+				
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<a href="dmz-travel-view69d8.html?crsIdx=IDX00000000000000010" class="card thumbnail poster shadow" style="background-image: url('dmz/image89f0.jpg?id=IDX00000000000000089');">
+							<div class="caption">
+								<h4>철원 코스 (도보 및 차량)</h4>
+								<p class="tag type2">아름다운 풍경 속, 역사의 상흔을 만나다</p>
+							</div>
+							
+						</a>
+					</div>
+                </div>
+				<div class="row">
+					<div class="col-lg-3 col-md-6 col-sm-6 col-xs-6">
+						<a href="dmz-travel-view8a59.html?crsIdx=IDX00000000000000007" class="card thumbnail poster shadow" style="background-image: url('dmz/image590d.jpg?id=IDX00000000000000015');">
+							<div class="caption">
+								<h4>고성 A코스 (도보 및 차량)</h4>
+								<p class="tag type2">파도소리 따라 해금강으로</p>
+							</div>
+							
+						</a>
+					</div>
+				
+					<div class="col-lg-3 col-md-6 col-sm-6 col-xs-6">
+						<a href="dmz-travel-view530f.html?crsIdx=IDX00000000000000005" class="card thumbnail poster shadow" style="background-image: url('dmz/image4a2d.jpg?id=IDX00000000000000027');">
+							<div class="caption">
+								<h4>고성 B코스 (차량)</h4>
+								<p class="tag type2">버스를 타고 만나는 금강산</p>
+							</div>
+							
+								<span class="dmz-group-label"></span>
+							
+						</a>
+					</div>
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6">
+						<a href="dmz-travel-view8a59.html?crsIdx=IDX00000000000000007" class="card thumbnail poster shadow" style="background-image: url('dmz/image590d.jpg?id=IDX00000000000000015');">
+							<div class="caption">
+								<h4>고성 A코스 (도보 및 차량)</h4>
+								<p class="tag type2">파도소리 따라 해금강으로</p>
+							</div>
+							
+						</a>
+					</div>
+				
+					<div class="col-lg-3 col-md-6 col-sm-6 col-xs-6">
+						<a href="dmz-travel-view530f.html?crsIdx=IDX00000000000000005" class="card thumbnail poster shadow" style="background-image: url('dmz/image4a2d.jpg?id=IDX00000000000000027');">
+							<div class="caption">
+								<h4>고성 B코스 (차량)</h4>
+								<p class="tag type2">버스를 타고 만나는 금강산</p>
+							</div>
+							
+								<span class="dmz-group-label"></span>
+							
+						</a>
+					</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- // DMZ 평화의길 여행 -->
+	<div class="main-bottom main-bottom-dmz">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 bg-color-dmz-dark pt-36 pb-30">
+
+					<div class="pr-30">
+						<div class="clearfix mb-20">
+							<h2 class="pull-left text-white mt-0 mb-0">자주하는 질문</h2>
+							<a href="dmz-info-faq.html" class="plus_more white pull-right mt-6"><span>자주하는 질문 더보기</span></a>
+						</div>
+
+						<ul class="q_list white2">
+							
+								<li><a href="dmz-info-faq188d.html?idx=29">DMZ 평화의길 프로그램에 단체이용이 가능한가요?</a></li>
+							
+								<li><a href="dmz-info-faq38fe.html?idx=28">DMZ 평화의길 프로그램 신청시 신청자 및 동반자의 인증 범위는 어떻게 되나요?</a></li>
+							
+								<li><a href="dmz-info-faqb1f5.html?idx=25">DMZ 평화의길 프로그램 신청은 어디에서 할 수 있나요?</a></li>
+							
+								<li><a href="dmz-info-faq6b06.html?idx=22">DMZ 평화의길 프로그램 이용요금은 얼마인가요?</a></li>
+							
+								<li><a href="dmz-info-faqe266.html?idx=21">대한민국 국민이 아닌 외국인도 DMZ 평화의길 프로그램을 신청할 수 있나요?</a></li>
+							
+							
+						</ul>
+					</div>
+
+				</div>
+				<div class="col-lg-3 pt-36 pb-30" style="background-color: darkgrey">
+
+					<div class="pl-30">
+						<div class="clearfix mb-20">
+							<h2 class="pull-left mt-0 mb-0">이용방법/유의사항</h2>
+							<a href="dmz-info-notice.html" class="plus_more pull-right mt-6"><span>이용방법/유의사항 더보기</span></a>
+						</div>
+
+						<ul class="s_list">
+							
+                            <li><a href="dmz-info-notice-view6dfe.html?idx=19">[꼭 읽어주세요] 집결지 및 이동방법</a> </li>
+							
+								<li><a href="dmz-info-notice-view3702.html?idx=3">[꼭 읽어주세요] 유의사항 </a></li>
+							<li><a href="dmz-info-notice-view6dfe.html?idx=19">[꼭 읽어주세요] 집결지 및 이동방법</a> </li>
+							
+								<li><a href="dmz-info-notice-view3702.html?idx=3">[꼭 읽어주세요] 유의사항 </a></li>
+							<li><a href="dmz-info-notice-view6dfe.html?idx=19">[꼭 읽어주세요] 집결지 및 이동방법</a> </li>
+							
+								<li><a href="dmz-info-notice-view3702.html?idx=3">[꼭 읽어주세요] 유의사항 </a></li>
+						</ul>
+					</div>
+
+				</div>
+                <div class="col-lg-3 pt-36 pb-30" style="background-color: cadetblue">
+
+					<div class="pr-30">
+						<div class="clearfix mb-20">
+							<h2 class="pull-left text-white mt-0 mb-0">자주하는 질문</h2>
+							<a href="dmz-info-faq.html" class="plus_more white pull-right mt-6"><span>자주하는 질문 더보기</span></a>
+						</div>
+
+						<ul class="q_list white2">
+							
+								<li><a href="dmz-info-faq188d.html?idx=29">DMZ 평화의길 프로그램에 단체이용이 가능한가요?</a></li>
+							
+								<li><a href="dmz-info-faq38fe.html?idx=28">DMZ 평화의길 프로그램 신청시 신청자 및 동반자의 인증 범위는 어떻게 되나요?</a></li>
+							
+								<li><a href="dmz-info-faqb1f5.html?idx=25">DMZ 평화의길 프로그램 신청은 어디에서 할 수 있나요?</a></li>
+							
+								<li><a href="dmz-info-faq6b06.html?idx=22">DMZ 평화의길 프로그램 이용요금은 얼마인가요?</a></li>
+							
+								<li><a href="dmz-info-faqe266.html?idx=21">대한민국 국민이 아닌 외국인도 DMZ 평화의길 프로그램을 신청할 수 있나요?</a></li>
+							
+							
+						</ul>
+					</div>
+
+				</div>
+				<div class="col-lg-3 bg-color-dmz-light pt-36 pb-30">
+
+					<div class="pl-30">
+						<div class="clearfix mb-20">
+							<h2 class="pull-left mt-0 mb-0">이용방법/유의사항</h2>
+							<a href="dmz-info-notice.html" class="plus_more pull-right mt-6"><span>이용방법/유의사항 더보기</span></a>
+						</div>
+
+						<ul class="s_list">
+							
+								<li><a href="dmz-info-notice-view6dfe.html?idx=19">[꼭 읽어주세요] 집결지 및 이동방법 </a></li>
+							
+								<li><a href="dmz-info-notice-view3702.html?idx=3">[꼭 읽어주세요] 유의사항 </a></li>
+							
+							
+						</ul>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer>
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-7">
+                    <ul>
+                        
+                            <li><a href="#" data-toggle="modal" data-target="#more-set-privacy-dmz">개인정보처리방침</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#more-set-location">위치기반서비스 이용약관</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#more-set-terms">회원약관</a></li>
+                        <li><a href="13-4P-0-util-about.html">두루누비소개</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-5">
+                    <label class="select up">
+                        <select class="form-control"
+                                onchange="window.open(this.options[this.selectedIndex].value,'_blank')">
+                            <option>패밀리 사이트 바로가기</option>
+                            <option value="https://blog.naver.com/koreatrails">네이버 블로그 바로가기</option>
+                            <option value="https://www.facebook.com/durunubi.kr">페이스북 바로가기</option>
+                            <option value="https://www.instagram.com/durunubi/">인스타그램 바로가기</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+
+
+            <div class="hidden-lg hidden-md">
+                <hr />
+                <div>DMZ 평화의길 고객센터 (신청접수 관련 문의)</div>
+                <ol>
+                    <li><i class="ion ion-ios-call"></i> 1644-1303  (평일09:00~18:00)</li>
+                    <li><i class="ion ion-ios-mail"></i> dmzwalk@knto.or.kr</li>
+                </ol>
+                <hr />
+                <div>고성군청 담당부서 (현장운영 관련 문의)</div>
+                <ol>
+                    <li><i class="ion ion-ios-call"></i> 033-680-3047 (평일 주간 08:30~18:00)</li>
+                    <li><i class="ion ion-ios-call"></i> 033-680-3222 (평일 야간 및 주말)</li>
+                </ol>
+                <hr />
+                <div>철원군청 담당부서 (현장운영 관련 문의)</div>
+                <ol>
+                    <li><i class="ion ion-ios-call"></i> 033-450-4266 (평일 주간 08:30~18:00)</li>
+                </ol>
+                <hr />
+                <div>파주시청 담당부서 (현장운영 관련 문의)</div>
+                <ol>
+                    <li><i class="ion ion-ios-call"></i> 031-954-1330 (평일 주간 08:30~18:00)</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="container pt-30 pb-30 hidden-xs hidden-sm">
+        <div class="row pr-100 letters">
+            <div class="col-lg-3">
+                <div class="font-size-14 mb-10"><strong>DMZ 평화의길 고객센터</strong> (신청접수 관련 문의)</div>
+                <ol class="letters">
+                    <li class="font-size-14"><i class="ion ion-ios-call"></i> 1644-1303  (평일09:00~18:00)</li>
+                    <li class="font-size-14"><i class="ion ion-ios-mail"></i> <a href="mailto:dmzwalk@knto.or.kr">dmzwalk@knto.or.kr</a></li>
+                </ol>
+            </div>
+            <div class="col-lg-3">
+                <div class="font-size-14 mb-10"><strong>고성군청 담당부서</strong> (현장운영 관련 문의)</div>
+                <ol class="letters">
+                    <li class="font-size-14"><i class="ion ion-ios-call"></i> 033-680-3047 (평일 주간 08:30~18:00)</li>
+                    <li class="font-size-14"><i class="ion ion-ios-call"></i> 033-680-3222 (평일 야간 및 주말)</li>
+                </ol>
+            </div>
+            <div class="col-lg-3">
+                <div class="font-size-14 mb-10"><strong>철원군청 담당부서</strong> (현장운영 관련 문의)</div>
+                <ol class="letters">
+                    <li class="font-size-14"><i class="ion ion-ios-call"></i> 033-450-4266 (평일 주간 08:30~18:00)</li>
+                </ol>
+            </div>
+            <div class="col-lg-3">
+                <div class="font-size-14 mb-10"><strong>파주시청 담당부서</strong> (현장운영 관련 문의)</div>
+                <ol class="letters">
+                    <li class="font-size-14"><i class="ion ion-ios-call"></i> 031-954-1330 (평일 08:30~18:00)</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom dmz">
+
+        <div class="container">
+            <div class="hidden-xs hidden-sm pt-30 pb-20">
+                <span class="pr-15">(26464) 강원도 원주시 세계로 10 (반곡동) 한국관광공사</span>     <span class="pr-15"> 사업자등록번호 : 202-81-50707</span>      <span class="pr-15">통신판매업신고22 : 제2009-서울중구-1234호</span>     Copyright by KTO. ALL RIGHTS RESERVED.
+            </div>
+            <div class="hidden-md hidden-lg m-pl-20 m-pr-20 font-size-9">
+                (26464) 강원도 원주시 세계로 10 (반곡동) 한국관광공사<br />
+                사업자등록번호 : 202-81-50707     &nbsp; 통신판매업신고 : 제2009-서울중구-1234호<br />
+                Copyright by KTO. ALL  RIGHTS RESERVED.
+            </div>
+        </div>
+
+    </div>
+</footer>
+</body>
+</html>
