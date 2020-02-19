@@ -109,7 +109,7 @@ author:
   name             : "ToToKr"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "I am a **Programmer**\n and **Magictian**."
-  location         : "KR"
+  location         : "Republic of Korea"
   email            :
   links:
     - label: "Email"
@@ -297,3 +297,10 @@ defaults:
       comments: # true
       share: true
       related: true
+  # _pages
+  - scope:
+      path: "_pages"
+      type: pages
+    values:
+      layout: single
+      author_profile: true
