@@ -1,6 +1,4 @@
 #main links
 main:
-  -title: "post"
-   url: /index/
   -title: "about"
    url: /about/
