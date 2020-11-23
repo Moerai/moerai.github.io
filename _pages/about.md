@@ -3,6 +3,7 @@ permalink: /about/
 title: "About"
 last_modified_at: 2020-11-23
 toc: true
+layout : single
 ---
 # Park SungSoo
 friendnt@g.skku.ac.kr
@@ -13,24 +14,33 @@ Programmer, Student. Interested in Human-Computer Interaction
 ### ONE : DongYangMirea Univ. Study Club
 - Study Java and Algorithm
 - Game Project
+
 ### EL : DongYangMirea Univ. Embedded Linux Academic Club
 - Project Assistant : develop communication between application and project device(2017.04 ~ 2017.11)
 - Project Manager & Developer : ABLE(Always Bicycle LifE) Project(2018.01 ~ 2018.11)
+
 ### YouthSpark Live 2017 (Microsoft / JA Korea)
+
 ### Part time job at Business Support Center of DongyangMirea Univ.(2017.09 ~ 2017.12)
 - Find a University web site vulnerability
 - Entrepreneurship teaching assistant
+
 ### Developer at YOLK(2017.12 ~ 2018.03)
+
 ### Developer at AIon(2018.09 ~ 2018.12)
+
 ### Researcher at (주)웨이브온(2019.07 ~ 2019.12)
 
-## Achievements 
+## Achievements
 ### Start-up competition 2017-2 1st
 Seoul Business Agency
+
 ### Graduation Competition 2018 1st
 DongYang Mirea Univ
+
 ### The World Embedded Software Contest 2018 1st in free sector
 Ministry of Trade, Industry and Energy
+
 ### 2020 Open Source SW Online Hackathon 2nd
 Ministry of National Defense & Ministry of Science ICT & National IT Industry Promotion Agency
 
