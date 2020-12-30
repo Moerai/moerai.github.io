@@ -5,10 +5,10 @@ last_modified_at: 2020-11-23
 toc: true
 layout : single
 ---
-# Park SungSoo
-friendnt@g.skku.ac.kr
+Hi there. I'm Park SungSoo, Programmer and Microwave Signaller @ Republic of Korea Defense Communication Command. Interested in Human-Computer Interaction and Startup company. Wellcome to my blog. This is my email adrees. Feel free to contact me.
+> friendnt@g.skku.ac.kr
 
-Programmer, Student. Interested in Human-Computer Interaction
+
 
 ## Experience
 - **ONE : DongYangMirea Univ. Study Club**
@@ -32,37 +32,35 @@ Programmer, Student. Interested in Human-Computer Interaction
 - Researcher at (주)웨이브온(2019.07 ~ 2019.12)
 
 ## Achievements
-### Start-up competition 2017-2 1st
-Seoul Business Agency
+- **Start-up competition 2017-2 1st**
+  - Seoul Business Agency
 
-### Graduation Competition 2018 1st
-DongYang Mirea Univ
+- **Graduation Competition 2018 1st**
+  - DongYang Mirea Univ
 
-### The World Embedded Software Contest 2018 1st in free sector
-Ministry of Trade, Industry and Energy
+- **The World Embedded Software Contest 2018 1st in free sector**
+  - Ministry of Trade, Industry and Energy
 
-### 2020 Open Source SW Online Hackathon 2nd
-Ministry of National Defense & Ministry of Science ICT & National IT Industry Promotion Agency
+- **2020 Military OpenSource SW Online Hackathon 2nd**
+  - Ministry of National Defense & Ministry of Science ICT & National IT Industry Promotion Agency
 
 ## Project
-### WTK(Wheelcheair Transfer Kit) <Start-up competition 1st>
-WTK is a kit that turns a manual wheelchair into an electric wheelchair.
-[implement function]
-- Manufacture of motors and controllers that convert an ordinary manual wheelchair into an electric wheelchair
-- Equipped with a camera that allows the guardian to check the condition of the disabled
-- Developed to move wheelchair with brain waves
+- **WTK(Wheelcheair Transfer Kit) <Start-up competition 1st>**
+  - WTK is a kit that turns a manual wheelchair into an electric wheelchair.
+  - [implement function]
+    - Manufacture of motors and controllers that convert an ordinary manual wheelchair into an electric wheelchair
+    - Equipped with a camera that allows the guardian to check the condition of the disabled
+    - Developed to move wheelchair with brain waves
 
-### ABLE(Always Bicycle LifE) <The World Embedded Software Contest 2018 1st in free sector>
-### SpecialForces <2020 Open Source SW Online Hackathon 2nd>
+- **ABLE(Always Bicycle LifE) <The World Embedded Software Contest 2018 1st in free sector>**
+
+- **SpecialForces <2020 Military OpenSource SW Online Hackathon 2nd>**
 
 ## Education
 - Computer Software Engineering @ DongYangMirea Univ.(2015.03~)
 - Campus CEO upbringing business camp & 5 class @ Seoul Business Agency(2017.09 ~ 2018.07)
 - AI school R&D practitioner training course @ Yangjae R&CD innovation Hub(2018.09 ~ 2018.12)
 - Future Industry Demand Specialization (VR) Education @ Innovation Center for Engineering Education of Yeungnam University College(2019.01)
-
-## GPA
-3.62/4.5
 
 ## Skills
 Major at C/C++, Python, JAVA
