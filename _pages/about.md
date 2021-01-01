@@ -31,6 +31,8 @@ Hi there. I'm Park SungSoo, Programmer and Microwave Signaller @ Republic of Kor
 
 - Researcher at (주)웨이브온(2019.07 ~ 2019.12)
 
+- Microwave Signaller at Republic of Korea Defense Communication Command(2020.03 ~ 2021.09)
+
 ## Achievements
 - **Start-up competition 2017-2 1st**
   - Seoul Business Agency
