@@ -1,7 +1,7 @@
 ---
 permalink: /about/
 title: "About"
-last_modified_at: 2020-11-23
+last_modified_at: 2021-01-02
 toc: true
 layout : single
 ---
@@ -35,7 +35,7 @@ Hi there. I'm Park SungSoo, Programmer and Microwave Signaller @ Republic of Kor
 
 ## Achievements
 - **Start-up competition 2017-2 1st**
-  - Seoul Business Agency
+  - Seoul Business Agency.
 
 - **Graduation Competition 2018 1st**
   - DongYang Mirea Univ
@@ -59,7 +59,8 @@ Hi there. I'm Park SungSoo, Programmer and Microwave Signaller @ Republic of Kor
 - **SpecialForces <2020 Military OpenSource SW Online Hackathon 2nd>**
 
 ## Education
-- Computer Software Engineering @ DongYangMirea Univ.(2015.03~)
+- Computer Software Engineering BS @ DongYangMirea Univ.(2015.03 ~ 2020.02)
+- Electrical and Computer Engineering MS @ sungkyunkwan Univ.(2020.03 ~ )
 - Campus CEO upbringing business camp & 5 class @ Seoul Business Agency(2017.09 ~ 2018.07)
 - AI school R&D practitioner training course @ Yangjae R&CD innovation Hub(2018.09 ~ 2018.12)
 - Future Industry Demand Specialization (VR) Education @ Innovation Center for Engineering Education of Yeungnam University College(2019.01)
