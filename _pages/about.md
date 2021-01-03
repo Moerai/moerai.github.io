@@ -5,9 +5,7 @@ last_modified_at: 2021-01-02
 toc: true
 layout : single
 ---
-Hi there. I'm Park SungSoo, Programmer and Microwave Signaller @ Republic of Korea Defense Communication Command. Interested in Human-Computer Interaction and Startup company. Wellcome to my blog. This is my email adrees. Feel free to contact me.
-> friendnt@g.skku.ac.kr
-
+Hi there. I'm Park SungSoo, Programmer and Microwave Signaller @ Republic of Korea Defense Communication Command. Interested in Human-Computer Interaction and Startup company. Wellcome to my blog. Feel free to contact me.
 
 
 ## Experience
@@ -50,11 +48,16 @@ Hi there. I'm Park SungSoo, Programmer and Microwave Signaller @ Republic of Kor
 - **WTK(Wheelcheair Transfer Kit) <Start-up competition 1st>**
   - WTK is a kit that turns a manual wheelchair into an electric wheelchair.
   - [implement function]
-    - Manufacture of motors and controllers that convert an ordinary manual wheelchair into an electric wheelchair
-    - Equipped with a camera that allows the guardian to check the condition of the disabled
-    - Developed to move wheelchair with brain waves
+    - Manufacture of motors and controllers that convert an ordinary manual wheelchair into an electric wheelchair.
+    - Equipped with a camera that allows the guardian to check the condition of the disabled.
+    - Developed to move wheelchair with brain waves.
 
 - **ABLE(Always Bicycle LifE) <The World Embedded Software Contest 2018 1st in free sector>**
+  - ABLE is smart bicycle kit that make more fun and safe.
+  - [implement function]
+    - Ride a bike fixed by rollers using VR indoor.
+    - Ride a bike with turn signal lights is more safety.
+    - Bicycle health care application.
 
 - **SpecialForces <2020 Military OpenSource SW Online Hackathon 2nd>**
 
