@@ -1,7 +1,7 @@
 ---
 permalink: /about/
 title: "About"
-last_modified_at: 2021-01-02
+last_modified_at: 2021-01-05
 toc: true
 layout : single
 ---
@@ -60,7 +60,12 @@ Hi there. I'm Park SungSoo, Programmer and Microwave Signaller @ Republic of Kor
     - Bicycle health care application.
 
 - **SpecialForces <2020 Military OpenSource SW Online Hackathon 2nd>**
-
+  - Special Force is a project expanded to IoT, Web, and App based on the theme of the fitness measurement app proposed by the Cyber Operations Command.
+  - [implement function]
+    - The IoT devices was designed to record fitness data automatically.
+    - The device consist of some modules that record and transmit fitness data to Android application through NFC technology.
+    - Soldiers can monitor their records via Android application and also heartrate data, sleep pattern data, fitness test data that according to MND(Ministry of National Defense) creteria.
+    
 ## Education
 - Computer Software Engineering BS @ DongYangMirea Univ.(2015.03 ~ 2020.02)
 - Electrical and Computer Engineering MS @ sungkyunkwan Univ.(2020.03 ~ )
